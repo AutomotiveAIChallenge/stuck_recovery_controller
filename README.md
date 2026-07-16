@@ -43,3 +43,9 @@ git clone https://github.com/AutomotiveAIChallenge/stuck_recovery_controller.git
   <param name="use_sim_time" value="$(var use_sim_time)"/>
 </node>
 ```
+
+### 3. ビルドする
+
+```bash
+make autoware-build
+```
