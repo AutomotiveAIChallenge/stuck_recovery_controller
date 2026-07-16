@@ -18,7 +18,7 @@ git clone https://github.com/AutomotiveAIChallenge/stuck_recovery_controller.git
 
 ### 2. コントローラの出力をこのノード経由にremapする
 
-mpc・pure pursuitに限らずpilot-netなど他のコントローラでも同様の手順で組み込める。ここでは例としてpure pursuitで説明する。
+ここでは例としてpure pursuitで説明する。
 
 出力先を直接 `/control/command/control_cmd` にpublishするのではなく `/control/command/nominal_control_cmd` にremapし、本ノードが最終的な `/control/command/control_cmd` をpublishするようにする。
 
