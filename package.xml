@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>stuck_recovery_controller</name>
+  <version>0.1.0</version>
+  <description>Controller for recovering an AWSIM racing kart from a stuck state</description>
+  <maintainer email="norikenpi@gmail.com">Masahiro Kubota</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <build_depend>autoware_cmake</build_depend>
+
+  <depend>rclcpp</depend>
+  <depend>autoware_auto_control_msgs</depend>
+  <depend>autoware_auto_vehicle_msgs</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
