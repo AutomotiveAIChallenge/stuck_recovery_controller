@@ -40,6 +40,7 @@ private:
 
   float latest_velocity_{0.0};
   bool is_autonomous_mode_{false};
+  bool moving_observed_{false};
   std::optional<rclcpp::Time> stuck_start_time_;
   std::optional<rclcpp::Time> recovery_start_time_;
 };

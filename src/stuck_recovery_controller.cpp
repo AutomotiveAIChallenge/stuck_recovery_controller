@@ -13,6 +13,7 @@ constexpr float kStuckSpeedThreshold = 0.1;
 constexpr double kStuckDurationSec = 1.0;
 constexpr float kCommandSpeedThreshold = 1.0;
 constexpr float kCommandAccelerationThreshold = 0.3;
+constexpr float kMovingSpeedThreshold = 0.5;
 constexpr double kReverseDurationSec = 4.0;
 constexpr double kDriveSettleDurationSec = 0.5;
 
@@ -58,8 +59,13 @@ void StuckRecoveryController::updateStuckDetection(
   const AckermannControlCommand & command, const rclcpp::Time & now)
 {
   const float velocity = latest_velocity_;
+  // Require movement once to avoid detecting the initial stationary state as stuck.
+  if (velocity >= kMovingSpeedThreshold) {
+    moving_observed_ = true;
+  }
+
   if (
-    command.longitudinal.speed < kCommandSpeedThreshold ||
+    !moving_observed_ || command.longitudinal.speed < kCommandSpeedThreshold ||
     command.longitudinal.acceleration < kCommandAccelerationThreshold)
   {
     stuck_start_time_.reset();
