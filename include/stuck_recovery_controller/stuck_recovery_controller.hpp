@@ -4,6 +4,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <autoware_auto_control_msgs/msg/ackermann_control_command.hpp>
+#include <autoware_auto_vehicle_msgs/msg/control_mode_report.hpp>
 #include <autoware_auto_vehicle_msgs/msg/gear_command.hpp>
 #include <autoware_auto_vehicle_msgs/msg/velocity_report.hpp>
 
@@ -14,6 +15,7 @@ namespace stuck_recovery_controller
 {
 
 using autoware_auto_control_msgs::msg::AckermannControlCommand;
+using autoware_auto_vehicle_msgs::msg::ControlModeReport;
 using autoware_auto_vehicle_msgs::msg::GearCommand;
 using autoware_auto_vehicle_msgs::msg::VelocityReport;
 
@@ -33,9 +35,11 @@ private:
   rclcpp::Publisher<AckermannControlCommand>::SharedPtr control_pub_;
   rclcpp::Publisher<GearCommand>::SharedPtr gear_pub_;
   rclcpp::Subscription<AckermannControlCommand>::SharedPtr nominal_sub_;
+  rclcpp::Subscription<ControlModeReport>::SharedPtr control_mode_sub_;
   rclcpp::Subscription<VelocityReport>::SharedPtr velocity_sub_;
 
   float latest_velocity_{0.0};
+  bool is_autonomous_mode_{false};
   bool moving_observed_{false};
   std::optional<rclcpp::Time> stuck_start_time_;
   std::optional<rclcpp::Time> recovery_start_time_;

@@ -27,6 +27,15 @@ StuckRecoveryController::StuckRecoveryController() : Node("stuck_recovery_contro
   nominal_sub_ = create_subscription<AckermannControlCommand>(
     "/control/command/nominal_control_cmd", 1,
     std::bind(&StuckRecoveryController::onNominalCommand, this, std::placeholders::_1));
+  control_mode_sub_ = create_subscription<ControlModeReport>(
+    "/vehicle/status/control_mode", 1,
+    [this](const ControlModeReport::ConstSharedPtr msg) {
+      is_autonomous_mode_ = msg->mode == ControlModeReport::AUTONOMOUS;
+      if (!is_autonomous_mode_) {
+        stuck_start_time_.reset();
+        moving_observed_ = false;
+      }
+    });
   velocity_sub_ = create_subscription<VelocityReport>(
     "/vehicle/status/velocity_status", 1,
     [this](const VelocityReport::ConstSharedPtr msg) {
@@ -42,7 +51,9 @@ void StuckRecoveryController::onNominalCommand(
     return;
   }
   control_pub_->publish(*msg);
-  updateStuckDetection(*msg, now);
+  if (is_autonomous_mode_) {
+    updateStuckDetection(*msg, now);
+  }
 }
 
 void StuckRecoveryController::updateStuckDetection(
